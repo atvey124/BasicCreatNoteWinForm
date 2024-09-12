@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Globalization;
 
 
 namespace BasicCreatNoteWinForm
@@ -59,9 +60,14 @@ namespace BasicCreatNoteWinForm
             {
                 if (noteText != null)
                 {
-                    using (MySqlCommand msCommand = new MySqlCommand("INSERT INTO note(text) VALUES (@uT)",DBConnection.GetConnect()))
+                    using (MySqlCommand msCommand = new MySqlCommand("INSERT INTO note(text,datetime,geoloc) VALUES (@uT,@uDT,@uG)", DBConnection.GetConnect()))
                     {
+                        CheckInfo checkInfo = new CheckInfo();
+
                         msCommand.Parameters.Add("@uT", MySqlDbType.VarChar).Value = noteText;
+                        msCommand.Parameters.Add("@uDT", MySqlDbType.DateTime).Value = checkInfo.GetCurrentDateTime();
+                        msCommand.Parameters.Add("@uG", MySqlDbType.DateTime).Value = checkInfo.GetCurrentGeolocation();
+
 
                         DBConnection.DBConnect();
                         msCommand.ExecuteNonQuery();
@@ -70,8 +76,8 @@ namespace BasicCreatNoteWinForm
                         EventManagment.SetMessageBox(new Action(() =>
                                                      MessageBox.Show("Note add succesfully")));
                     }
-                    EventManagment.InvokeMessageBox();
                 }
+                EventManagment.InvokeMessageBox();
             }
         }
     }

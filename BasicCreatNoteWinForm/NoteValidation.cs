@@ -21,9 +21,9 @@ namespace BasicCreatNoteWinForm
             }
 
 
-            Regex hasUpperChar = new Regex(@"[A-Z]+");
+            Regex hasUpperChar   = new Regex(@"[A-Z]+");
             Regex hasMiniMaxChar = new Regex(@".{20,500}");
-            Regex hasLowerChar = new Regex(@"[a-z]+");
+            Regex hasLowerChar   = new Regex(@"[a-z]+");
 
 
             if (!hasUpperChar.IsMatch(inputText))

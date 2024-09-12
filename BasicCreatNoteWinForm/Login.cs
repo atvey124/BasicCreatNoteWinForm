@@ -21,7 +21,7 @@ namespace BasicCreatNoteWinForm
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             string password = textBoxPassword.Text;
-            string login = textBoxLogin.Text;
+            string login    = textBoxLogin.Text;
 
             if (PassValidation.ValidationLogin(password))
             {
@@ -39,7 +39,6 @@ namespace BasicCreatNoteWinForm
                 } 
             }
             EventManagment.InvokeMessageBox();
-
 
         }
 

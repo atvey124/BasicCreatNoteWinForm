@@ -18,10 +18,10 @@ namespace BasicCreatNoteWinForm
             }
 
 
-            Regex hasNumber = new Regex(@"[0-9]+");
-            Regex hasUpperChar = new Regex(@"[A-Z]+");
+            Regex hasNumber      = new Regex(@"[0-9]+");
+            Regex hasUpperChar   = new Regex(@"[A-Z]+");
             Regex hasMiniMaxChar = new Regex(@".{6,12}");
-            Regex hasLowerChar = new Regex(@"[a-z]+");
+            Regex hasLowerChar   = new Regex(@"[a-z]+");
 
 
             if (!hasNumber.IsMatch(inputLogin))

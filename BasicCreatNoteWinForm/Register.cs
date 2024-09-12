@@ -24,8 +24,8 @@ namespace BasicCreatNoteWinForm
                 LoginValidation.ValidationLogin(login))
             {
                 InsertInto insertUser = new InsertInto();
-
                 CookieUser cookieUser = new CookieUser();
+
                 cookieUser.SetUserLogin(login);
                 cookieUser.SetUserPassword(password);
 

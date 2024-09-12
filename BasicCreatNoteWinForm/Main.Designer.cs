@@ -35,6 +35,8 @@
             labelNextNote = new Label();
             labelBackNote = new Label();
             labelUniqueNumber = new Label();
+            labelDateTime = new Label();
+            labelGeolocation = new Label();
             SuspendLayout();
             // 
             // buttonProfile
@@ -115,10 +117,32 @@
             labelUniqueNumber.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
             labelUniqueNumber.Location = new Point(366, 82);
             labelUniqueNumber.Name = "labelUniqueNumber";
-            labelUniqueNumber.Size = new Size(33, 40);
+            labelUniqueNumber.Size = new Size(182, 40);
             labelUniqueNumber.TabIndex = 6;
-            labelUniqueNumber.Text = "1";
+            labelUniqueNumber.Text = "number note";
             labelUniqueNumber.Click += labelUniqueNumber_Click;
+            // 
+            // labelDateTime
+            // 
+            labelDateTime.AutoSize = true;
+            labelDateTime.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            labelDateTime.Location = new Point(894, 130);
+            labelDateTime.Name = "labelDateTime";
+            labelDateTime.Size = new Size(92, 25);
+            labelDateTime.TabIndex = 7;
+            labelDateTime.Text = "date note";
+            labelDateTime.Click += labelDateTime_Click;
+            // 
+            // labelGeolocation
+            // 
+            labelGeolocation.AutoSize = true;
+            labelGeolocation.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            labelGeolocation.Location = new Point(894, 184);
+            labelGeolocation.Name = "labelGeolocation";
+            labelGeolocation.Size = new Size(112, 25);
+            labelGeolocation.TabIndex = 8;
+            labelGeolocation.Text = "geolocation";
+            labelGeolocation.Click += labelGeolocation_Click;
             // 
             // Main
             // 
@@ -126,6 +150,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(1120, 658);
+            Controls.Add(labelGeolocation);
+            Controls.Add(labelDateTime);
             Controls.Add(labelUniqueNumber);
             Controls.Add(labelBackNote);
             Controls.Add(labelNextNote);
@@ -148,5 +174,7 @@
         private Label labelNextNote;
         private Label labelBackNote;
         private Label labelUniqueNumber;
+        private Label labelDateTime;
+        private Label labelGeolocation;
     }
 }

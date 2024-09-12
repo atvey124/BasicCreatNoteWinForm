@@ -7,7 +7,7 @@ namespace BasicCreatNoteWinForm
 {
     static class DBConnection
     {
-        private static readonly MySqlConnection DBconnect = new MySqlConnection("server=localhost;port=3306;username=root;password=1234;database=main_db");
+        private static readonly MySqlConnection DBconnect = new MySqlConnection("server=localhost;port=3306;username=root;password=1234;database=main_db;Allow User Variables=True");
 
 
         [StackTraceHidden]

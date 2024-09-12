@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.Logging;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace BasicCreatNoteWinForm
 {
@@ -17,31 +18,30 @@ namespace BasicCreatNoteWinForm
         [StackTraceHidden]
         public bool IsUniqueUserLogin(string login)
         {
-            string userLogin = login;
+            string userLogin  = login;
             bool isUniqueUser = true;
 
+            DBConnection.DBConnect();
             using(MySqlCommand msCommand = new MySqlCommand("SELECT login FROM users WHERE login = @uL", DBConnection.GetConnect()))
             {
                 msCommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value = Hashing.HashSha128(login);
-                using(MySqlDataAdapter dataAdapter = new MySqlDataAdapter())
-                {
-                    dataAdapter.SelectCommand = msCommand;
-                    using (DataTable dataTable = new DataTable())
-                    {
-                        dataTable.Clear();
-                        dataAdapter.Fill(dataTable);
 
-                        if (dataTable.Rows.Count > 0)
+                using(MySqlDataReader dataReader = msCommand.ExecuteReader())
+                {
+                    if(dataReader.Read())
+                    {
+                        if(dataReader.HasRows)
                         {
+                            isUniqueUser = false;
+
                             EventManagment.SetMessageBox(new Action(() =>
                                                          MessageBox.Show("User Already exist")));
-                            isUniqueUser = false;
                         }
-
-                        return isUniqueUser;
-                    }  
+                    }     
                 }
             }
+            DBConnection.DBCloseConnect();
+            return isUniqueUser;
         }
 
         [StackTraceHidden]
@@ -57,82 +57,98 @@ namespace BasicCreatNoteWinForm
 
                 using(MySqlDataReader dataReader = msCommand.ExecuteReader())
                 {
-
                     if(dataReader.Read())
                     {
                         if (dataReader["password"].ToString() == Hashing.HashSha128(password) && dataReader["login"].ToString() == Hashing.HashSha128(login))
                             lockAutorized = true;
-                        else
-                            EventManagment.SetMessageBox(new Action(() =>
-                                                         MessageBox.Show("the login or password is not correct")));
                     }
+                    else
+                        EventManagment.SetMessageBox(new Action(() =>
+                                                     MessageBox.Show("the login or password is not correct")));
                 }
             }
             DBConnection.DBCloseConnect();
             return lockAutorized;
         }
 
+
         [StackTraceHidden]
-        public int IsMaxNumberNote()
+        public string CurrentNoteText(int currentNote)
         {
-            int maxNumberNote = 0;
+            int currentNoteNumber  = currentNote;
+            string currentNoteText = string.Empty;
 
             DBConnection.DBConnect();
-            using (MySqlCommand msCommand = new MySqlCommand("SELECT MAX(id_note) FROM note", DBConnection.GetConnect()))
+            using (MySqlCommand msCommand = new MySqlCommand("SELECT text FROM note WHERE id_note = @cN", DBConnection.GetConnect()))
             {
+                msCommand.Parameters.Add("@cN", MySqlDbType.Int32).Value = currentNoteNumber;
 
                 using (MySqlDataReader dataReader = msCommand.ExecuteReader())
                 {
-
-                    if (dataReader.Read())
+                    if(dataReader.Read())
                     {
-                        maxNumberNote = dataReader.GetInt32(0);
+                        if (dataReader.HasRows)
+                            currentNoteText = dataReader.GetString(0);
+
+                    }
+                    else
+                    {
+                        EventManagment.SetMessageBox(new Action(() =>
+                                                     MessageBox.Show("Have you scrolled to the end")));
                     }
                 }
             }
-
             DBConnection.DBCloseConnect();
-            return maxNumberNote;
+            return currentNoteText;
         }
 
         [StackTraceHidden]
-        public string IsCurrentNote(int currentNote,int minNumberNote)
+        public DateTime CurrentDateTimeNote(int currentNote)
         {
-            int currentNoteNumber = currentNote;
-            string currentNoteText = string.Empty;
+            int currentNoteNumber    = currentNote;
+            DateTime currentDateTime = default;
 
-            if(currentNoteNumber < minNumberNote)
+            DBConnection.DBConnect();
+            using (MySqlCommand msCommand = new MySqlCommand("SELECT datetime FROM note WHERE id_note = @cN", DBConnection.GetConnect()))
             {
-                EventManagment.SetMessageBox(new Action(() =>
-                                             MessageBox.Show("It is first note")));
-            }
-            else if(currentNoteNumber > IsMaxNumberNote()) 
-            {
-                EventManagment.SetMessageBox(new Action(() =>
-                                             MessageBox.Show("It is last note")));
-            }
-            else
-            {
-                DBConnection.DBConnect();
+                msCommand.Parameters.Add("@cN", MySqlDbType.Int32).Value = currentNoteNumber;
 
-                using (MySqlCommand msCommand = new MySqlCommand("SELECT text FROM note WHERE id_note = @cN", DBConnection.GetConnect()))
+                using (MySqlDataReader dataReader = msCommand.ExecuteReader())
                 {
-                    msCommand.Parameters.Add("@cN", MySqlDbType.Int32).Value = currentNoteNumber;
-
-                    using (MySqlDataReader dataReader = msCommand.ExecuteReader())
-                    {
-
-                        if (dataReader.Read())
-                        {
-                            currentNoteText = dataReader.GetString(0);
-                        }
-                    }
+                    if (dataReader.Read())
+                        currentDateTime = dataReader.GetDateTime(0);
                 }
-                DBConnection.DBCloseConnect();
-                return currentNoteText;
             }
-
-            return string.Empty;
+            DBConnection.DBCloseConnect();
+            return currentDateTime;
         }
+
+        [StackTraceHidden]
+        public string CurrentGeolocationNote(int currentNote)
+        {
+            int currentNoteNumber     = currentNote;
+            string currentGeolocation = string.Empty;
+
+            DBConnection.DBConnect();
+            using (MySqlCommand msCommand = new MySqlCommand("SELECT geoloc FROM note WHERE id_note = @cN", DBConnection.GetConnect()))
+            {
+                msCommand.Parameters.Add("@cN", MySqlDbType.Int32).Value = currentNoteNumber;
+
+                using (MySqlDataReader dataReader = msCommand.ExecuteReader())
+                {
+                    if (dataReader.Read())
+                        currentGeolocation = dataReader.GetString(0);
+                }
+            }
+            DBConnection.DBCloseConnect();
+            return currentGeolocation;
+        }
+
+        [StackTraceHidden]
+        public string GetCurrentGeolocation() => RegionInfo.CurrentRegion.ThreeLetterWindowsRegionName;
+
+        [StackTraceHidden]
+        public DateTime GetCurrentDateTime()  => DateTime.Now;
+
     }
 }

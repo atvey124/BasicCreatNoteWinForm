@@ -13,15 +13,17 @@ namespace BasicCreatNoteWinForm
     public partial class Main : Form
     {
         private const int numberNoteDefaultValue = 1;
-        private int currentNote = numberNoteDefaultValue;
+        private int currentNote                  = numberNoteDefaultValue;
 
         public Main()
         {
             InitializeComponent();
             CheckInfo checkInfo = new CheckInfo();
 
-            textBoxNote.Text = checkInfo.IsCurrentNote(currentNote, numberNoteDefaultValue);
+            textBoxNote.Text       = checkInfo.CurrentNoteText(currentNote);
             labelUniqueNumber.Text = currentNote.ToString();
+            labelDateTime.Text     = checkInfo.CurrentDateTimeNote(currentNote).ToString();
+            labelGeolocation.Text  = checkInfo.CurrentGeolocationNote(currentNote);
         }
 
         private void labelCreatNote_Click(object sender, EventArgs e)
@@ -44,7 +46,7 @@ namespace BasicCreatNoteWinForm
         private void labelBackNote_Click(object sender, EventArgs e)
         {
             CheckInfo checkInfo = new CheckInfo();
-            string noteText = checkInfo.IsCurrentNote(--currentNote, numberNoteDefaultValue);
+            string noteText     = checkInfo.CurrentNoteText(--currentNote);
 
             if (noteText != string.Empty)
                 textBoxNote.Text = noteText;
@@ -60,7 +62,7 @@ namespace BasicCreatNoteWinForm
         private void labelNextNote_Click(object sender, EventArgs e)
         {
             CheckInfo checkInfo = new CheckInfo();
-            string noteText = checkInfo.IsCurrentNote(++currentNote, numberNoteDefaultValue);
+            string noteText     = checkInfo.CurrentNoteText(++currentNote);
 
             if (noteText != string.Empty)
                 textBoxNote.Text = noteText;
@@ -76,6 +78,20 @@ namespace BasicCreatNoteWinForm
         private void textBoxNote_TextChanged(object sender, EventArgs e)
         {
             labelUniqueNumber.Text = currentNote.ToString();
+
+            CheckInfo checkInfo   = new CheckInfo();
+            labelDateTime.Text    = checkInfo.CurrentDateTimeNote(currentNote).ToString();
+            labelGeolocation.Text = checkInfo.CurrentGeolocationNote(currentNote);
+        }
+
+        private void labelGeolocation_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelDateTime_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void labelUniqueNumber_Click(object sender, EventArgs e)
@@ -92,5 +108,7 @@ namespace BasicCreatNoteWinForm
         {
 
         }
+
+
     }
 }
