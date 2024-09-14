@@ -12,11 +12,13 @@ namespace BasicCreatNoteWinForm
 {
     public partial class login : Form
     {
+        private readonly CheckInfo checkAutorized = new CheckInfo();
+
+
         public login()
         {
             InitializeComponent();
         }
-
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -25,7 +27,6 @@ namespace BasicCreatNoteWinForm
 
             if (PassValidation.ValidationLogin(password))
             {
-                CheckInfo checkAutorized = new CheckInfo();
                 if (checkAutorized.IsAuthorized(password, login))
                 {
                     CookieUser cookieUser = new CookieUser();

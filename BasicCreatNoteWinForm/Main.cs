@@ -13,17 +13,46 @@ namespace BasicCreatNoteWinForm
     public partial class Main : Form
     {
         private const int numberNoteDefaultValue = 1;
-        private int currentNote                  = numberNoteDefaultValue;
+        private static int currentNote           = numberNoteDefaultValue;
+
+
+        private readonly CookieUser cookieUser   = new CookieUser();
+        private readonly CheckInfo checkInfo     = new CheckInfo();
+        private readonly InsertInto insertNote   = new InsertInto();
+        private readonly UpdateDB updateDataBase = new UpdateDB();
+
 
         public Main()
         {
             InitializeComponent();
-            CheckInfo checkInfo = new CheckInfo();
+
+            if (checkInfo.IsUserNote(currentNote))
+                labelIsUserNote.Text = "Is yours note";
+            else
+                labelIsUserNote.Text = string.Empty;
 
             textBoxNote.Text       = checkInfo.CurrentNoteText(currentNote);
             labelUniqueNumber.Text = currentNote.ToString();
-            labelDateTime.Text     = checkInfo.CurrentDateTimeNote(currentNote).ToString();
+            labelDateTime.Text     = checkInfo.CurrentDateTimeNote(currentNote);
             labelGeolocation.Text  = checkInfo.CurrentGeolocationNote(currentNote);
+            labelLoginUser.Text    = checkInfo.CurrentUserNote(currentNote);
+            labelEnjoy.Text        = checkInfo.CurrentEnjoy(currentNote).ToString();
+            labelUnenjoy.Text      = checkInfo.CurrentUnenjoy(currentNote).ToString();
+        }
+
+        private void textBoxNote_TextChanged(object sender, EventArgs e)
+        {
+            if (checkInfo.IsUserNote(currentNote))
+                labelIsUserNote.Text = "Is yours note";
+            else
+                labelIsUserNote.Text = string.Empty;
+
+            labelUniqueNumber.Text = currentNote.ToString();
+            labelDateTime.Text     = checkInfo.CurrentDateTimeNote(currentNote);
+            labelGeolocation.Text  = checkInfo.CurrentGeolocationNote(currentNote);
+            labelLoginUser.Text    = checkInfo.CurrentUserNote(currentNote);
+            labelEnjoy.Text        = checkInfo.CurrentEnjoy(currentNote).ToString();
+            labelUnenjoy.Text      = checkInfo.CurrentUnenjoy(currentNote).ToString();
         }
 
         private void labelCreatNote_Click(object sender, EventArgs e)
@@ -32,12 +61,13 @@ namespace BasicCreatNoteWinForm
 
             if (NoteValidation.ValidationNoteText(textNote))
             {
-                InsertInto insertNote = new InsertInto();
                 ThreadPool.QueueUserWorkItem((object? timeOperation) =>
                 {
                     WaitCallback waitCallback = new WaitCallback(insertNote.InsertNote);
                     this.InvokeExCallback(waitCallback, textNote);
                 }, textNote);
+
+                textBoxCreatNote.ResetText();
             }
             else
                 EventManagment.InvokeMessageBox();
@@ -45,12 +75,10 @@ namespace BasicCreatNoteWinForm
 
         private void labelBackNote_Click(object sender, EventArgs e)
         {
-            CheckInfo checkInfo = new CheckInfo();
-            string noteText     = checkInfo.CurrentNoteText(--currentNote);
+            string noteText = checkInfo.CurrentNoteText(--currentNote);
 
             if (noteText != string.Empty)
                 textBoxNote.Text = noteText;
-
             else
             {
                 EventManagment.InvokeMessageBox();
@@ -61,12 +89,10 @@ namespace BasicCreatNoteWinForm
 
         private void labelNextNote_Click(object sender, EventArgs e)
         {
-            CheckInfo checkInfo = new CheckInfo();
-            string noteText     = checkInfo.CurrentNoteText(++currentNote);
+            string noteText = checkInfo.CurrentNoteText(++currentNote);
 
             if (noteText != string.Empty)
                 textBoxNote.Text = noteText;
-
             else
             {
                 EventManagment.InvokeMessageBox();
@@ -75,13 +101,63 @@ namespace BasicCreatNoteWinForm
 
         }
 
-        private void textBoxNote_TextChanged(object sender, EventArgs e)
+        private void labelSearch_Click(object sender, EventArgs e)
         {
-            labelUniqueNumber.Text = currentNote.ToString();
+            string searchNote = textBoxSearch.Text;
 
-            CheckInfo checkInfo   = new CheckInfo();
-            labelDateTime.Text    = checkInfo.CurrentDateTimeNote(currentNote).ToString();
-            labelGeolocation.Text = checkInfo.CurrentGeolocationNote(currentNote);
+            if (SearchValidation.SearchValidationMain(searchNote))
+            {
+                currentNote = int.Parse(searchNote);
+                textBoxNote.Text = checkInfo.CurrentNoteText(currentNote);
+            }
+            else
+                EventManagment.InvokeMessageBox();
+
+        }
+
+        private void labelEnjoy_Click(object sender, EventArgs e)
+        {
+            if (!checkInfo.IsEnjoy(currentNote))
+            {
+                updateDataBase.AddEnjoy(currentNote);
+                cookieUser.AddUserEnjoy(currentNote);
+
+            }
+            else
+            {
+                updateDataBase.RemoveEnjoy(currentNote);
+                cookieUser.DeleteUserEnjoy(currentNote);
+
+            }
+            labelEnjoy.Text = checkInfo.CurrentEnjoy(currentNote).ToString();
+
+        }
+
+        private void labelUnenjoy_Click(object sender, EventArgs e)
+        {
+            if (!checkInfo.IsUnenjoy(currentNote))
+            {
+                updateDataBase.AddUnenjoy(currentNote);
+                cookieUser.AddUserUnenjoy(currentNote);
+            }
+            else
+            {
+                updateDataBase.RemoveUnenjoy(currentNote);
+                cookieUser.DeleteUserUnenjoy(currentNote);
+            }
+            labelUnenjoy.Text = checkInfo.CurrentUnenjoy(currentNote).ToString();
+        }
+
+        private void buttonProfile_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Profile profileForm = new Profile();
+            profileForm.Show();
+        }
+
+        private void labelLoginUser_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void labelGeolocation_Click(object sender, EventArgs e)
@@ -99,16 +175,14 @@ namespace BasicCreatNoteWinForm
 
         }
 
-        private void buttonProfile_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void textBoxCreatNote_TextChanged(object sender, EventArgs e)
         {
 
         }
 
+        private void labelIsUserNote_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

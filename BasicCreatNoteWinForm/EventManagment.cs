@@ -37,8 +37,5 @@ namespace BasicCreatNoteWinForm
             MessageBoxError += actionEvent;
         }
 
-
     }
-
-
 }

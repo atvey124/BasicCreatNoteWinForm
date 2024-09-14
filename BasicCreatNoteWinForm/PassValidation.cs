@@ -6,8 +6,8 @@ namespace BasicCreatNoteWinForm
     {
         static public bool ValidationRegister(string password,string passwordRepeat)
         {
-            string inputPassword = password;
-            string inputRepeatPassword = password;
+            string inputPassword       = password;
+            string inputRepeatPassword = passwordRepeat;
 
             if (string.IsNullOrEmpty(inputPassword))
             {
@@ -16,19 +16,19 @@ namespace BasicCreatNoteWinForm
                 return false;
             }
 
-            else if(inputPassword != inputRepeatPassword)
+            else if(!inputPassword.Equals(inputRepeatPassword))
             {
                 EventManagment.SetMessageBox(new Action(() =>
-                       MessageBox.Show("Password don't match")));
+                                             MessageBox.Show("Password don't match")));
                 return false;
             }
 
 
-            Regex hasNumber = new Regex(@"[0-9]+");
-            Regex hasUpperChar = new Regex(@"[A-Z]+");
+            Regex hasNumber      = new Regex(@"[0-9]+");
+            Regex hasUpperChar   = new Regex(@"[A-Z]+");
             Regex hasMiniMaxChar = new Regex(@".{6,12}");
-            Regex hasLowerChar = new Regex(@"[a-z]+");
-            Regex hasSymbols = new Regex(@"[!@#$%^&*]");
+            Regex hasLowerChar   = new Regex(@"[a-z]+");
+            Regex hasSymbols     = new Regex(@"[!@#$%^&*]");
 
 
             if (!hasNumber.IsMatch(inputPassword))

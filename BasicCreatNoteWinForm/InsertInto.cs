@@ -17,6 +17,9 @@ namespace BasicCreatNoteWinForm
         private MySqlCommand msCommand = new MySqlCommand();    
         private object _lockObj        = new object();
 
+        private readonly CheckInfo checkInfo   = new CheckInfo();
+        private readonly CookieUser cookieUser = new CookieUser();
+
 
         [StackTraceHidden]
         public void InsertUser(object cUser)
@@ -27,18 +30,18 @@ namespace BasicCreatNoteWinForm
             {
                 if (cookieUser != null)
                 {
-                    CheckInfo checkUniqueUser = new CheckInfo();
-
-                    if (checkUniqueUser.IsUniqueUserLogin(cookieUser.GetUserLogin()))
+                    if (checkInfo.IsUniqueUserLogin(cookieUser.GetUserLogin()))
                     {
                         using(MySqlCommand msCommand = new MySqlCommand("INSERT INTO users(password,login) VALUES (@uP,@uL)", DBConnection.GetConnect()))
                         {
                             msCommand.Parameters.Add("@uP", MySqlDbType.VarChar).Value = Hashing.HashSha128(cookieUser.GetUserPassword());
                             msCommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value = Hashing.HashSha128(cookieUser.GetUserLogin());
 
+
                             DBConnection.DBConnect();
                             msCommand.ExecuteNonQuery();
                             DBConnection.DBCloseConnect();
+
 
                             EventManagment.SetMessageBox(new Action(() =>
                                                          MessageBox.Show("Register succesfully")));
@@ -50,7 +53,6 @@ namespace BasicCreatNoteWinForm
             }
         }
 
-
         [StackTraceHidden]
         public void InsertNote(object text)
         {
@@ -60,18 +62,18 @@ namespace BasicCreatNoteWinForm
             {
                 if (noteText != null)
                 {
-                    using (MySqlCommand msCommand = new MySqlCommand("INSERT INTO note(text,datetime,geoloc) VALUES (@uT,@uDT,@uG)", DBConnection.GetConnect()))
+                    using (MySqlCommand msCommand = new MySqlCommand("INSERT INTO note(text,datetime,geoloc,login_user) VALUES (@uT,@uDT,@uG,@uL)", DBConnection.GetConnect()))
                     {
-                        CheckInfo checkInfo = new CheckInfo();
-
-                        msCommand.Parameters.Add("@uT", MySqlDbType.VarChar).Value = noteText;
+                        msCommand.Parameters.Add("@uT", MySqlDbType.VarChar).Value   = noteText;
                         msCommand.Parameters.Add("@uDT", MySqlDbType.DateTime).Value = checkInfo.GetCurrentDateTime();
-                        msCommand.Parameters.Add("@uG", MySqlDbType.DateTime).Value = checkInfo.GetCurrentGeolocation();
+                        msCommand.Parameters.Add("@uG", MySqlDbType.VarChar).Value   = checkInfo.GetCurrentGeolocation();
+                        msCommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value   = cookieUser.GetUserLogin();
 
 
                         DBConnection.DBConnect();
                         msCommand.ExecuteNonQuery();
                         DBConnection.DBCloseConnect();
+
 
                         EventManagment.SetMessageBox(new Action(() =>
                                                      MessageBox.Show("Note add succesfully")));
@@ -80,5 +82,6 @@ namespace BasicCreatNoteWinForm
                 EventManagment.InvokeMessageBox();
             }
         }
+
     }
 }

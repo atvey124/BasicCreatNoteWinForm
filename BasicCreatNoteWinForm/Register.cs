@@ -6,12 +6,14 @@ namespace BasicCreatNoteWinForm
 {
     public partial class FormMain : Form
     {
+        InsertInto insertUser = new InsertInto();
+        CookieUser cookieUser = new CookieUser();
+
 
         public FormMain()
         {
             InitializeComponent();
         }
-
 
         private void buttonRegister_Click(object sender, EventArgs e)
         {
@@ -23,9 +25,6 @@ namespace BasicCreatNoteWinForm
             if (PassValidation.ValidationRegister(password, passwordRepeat) &&
                 LoginValidation.ValidationLogin(login))
             {
-                InsertInto insertUser = new InsertInto();
-                CookieUser cookieUser = new CookieUser();
-
                 cookieUser.SetUserLogin(login);
                 cookieUser.SetUserPassword(password);
 
@@ -41,14 +40,12 @@ namespace BasicCreatNoteWinForm
                 EventManagment.InvokeMessageBox();
         }
 
-
         private void buttonReset_Click(object sender, EventArgs e)
         {
             textBoxLogin.ResetText();
             textBoxPassword.ResetText();
             textBoxRepeatPassword.ResetText();
         }
-
 
         private void labelredirectLogin_Click(object sender, EventArgs e)
         {
@@ -57,18 +54,15 @@ namespace BasicCreatNoteWinForm
             loginForm.Show();
         }
 
-
         private void textBoxLogin_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-
         private void textBoxPassword_TextChanged(object sender, EventArgs e)
         {
 
         }
-
 
         private void textBoxRepeatPassword_TextChanged(object sender, EventArgs e)
         {

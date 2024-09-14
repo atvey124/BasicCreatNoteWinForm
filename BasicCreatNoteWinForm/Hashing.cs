@@ -18,8 +18,6 @@ namespace BasicCreatNoteWinForm
 
                 return Convert.ToBase64String(hash);
             }
-        }
-
-        
+        }  
     }
 }
