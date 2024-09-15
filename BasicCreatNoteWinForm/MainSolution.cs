@@ -1,3 +1,4 @@
+
 namespace BasicCreatNoteWinForm
 {
     internal static class MainSolution

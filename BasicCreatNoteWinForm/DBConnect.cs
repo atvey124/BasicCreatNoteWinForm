@@ -1,7 +1,5 @@
 ﻿using MySqlConnector;
-using System.Data;
 using System.Diagnostics;
-
 
 namespace BasicCreatNoteWinForm
 {

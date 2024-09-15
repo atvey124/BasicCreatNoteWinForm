@@ -1,7 +1,4 @@
-﻿using MySqlConnector;
-using System.Threading;
-
-
+﻿
 namespace BasicCreatNoteWinForm
 {
     static class ControlHelper
