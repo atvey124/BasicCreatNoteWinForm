@@ -11,6 +11,8 @@ namespace BasicCreatNoteWinForm
         private readonly NoteManagment checkCurrentNoteInfo = new NoteManagment();
         private readonly InsertManagment insertNote         = new InsertManagment();
         private readonly UpdateManagment updateNote         = new UpdateManagment();
+        private readonly SearchValidation searchValidation  = new SearchValidation();
+        private readonly NoteValidation noteValidation      = new NoteValidation();
 
 
         public Main()
@@ -50,7 +52,7 @@ namespace BasicCreatNoteWinForm
         {
             string textNote = textBoxCreatNote.Text;
 
-            if (NoteValidation.ValidationNoteText(textNote))
+            if (noteValidation.Validation(textNote))
             {
                 ThreadPool.QueueUserWorkItem((object? timeOperation) =>
                 {
@@ -96,7 +98,7 @@ namespace BasicCreatNoteWinForm
         {
             string searchNote = textBoxSearch.Text;
 
-            if (SearchValidation.SearchValidationMain(searchNote))
+            if (searchValidation.Validation(searchNote))
             {
                 currentNote = int.Parse(searchNote);
                 textBoxNote.Text = checkCurrentNoteInfo.CurrentNoteText(currentNote);

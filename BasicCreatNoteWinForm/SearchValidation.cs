@@ -2,13 +2,13 @@
 
 namespace BasicCreatNoteWinForm
 {
-    static class SearchValidation
+    class SearchValidation : IValidations
     {
-        static public bool SearchValidationMain(string text)
-        {        
-            string searchText = text;
+        public bool Validation(string textToCheckValid)
+        {
+            string searchText = textToCheckValid;
 
-            if(int.TryParse(searchText,out int value))
+            if (int.TryParse(searchText, out int value))
             {
                 NoteManagment noteManagment = new NoteManagment();
 
@@ -16,7 +16,7 @@ namespace BasicCreatNoteWinForm
                 int MaxValueNote = noteManagment.GetMaxNumberNote();
 
                 if (value >= MinValueNote && value <= MaxValueNote)
-                    return true; 
+                    return true;
                 else
                 {
                     EventManagment.SetMessageBox(new Action(() =>

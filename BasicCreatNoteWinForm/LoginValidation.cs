@@ -2,11 +2,11 @@
 
 namespace BasicCreatNoteWinForm
 {
-    static class LoginValidation
+    class LoginValidation : IValidations
     {
-        static public bool ValidationLogin(string login)
+        public bool Validation(string textToCheckValid)
         {
-            string inputLogin = login;
+            string inputLogin = textToCheckValid;
 
             if (string.IsNullOrEmpty(inputLogin))
             {
@@ -16,10 +16,10 @@ namespace BasicCreatNoteWinForm
             }
 
 
-            Regex hasNumber      = new Regex(@"[0-9]+");
-            Regex hasUpperChar   = new Regex(@"[A-Z]+");
+            Regex hasNumber = new Regex(@"[0-9]+");
+            Regex hasUpperChar = new Regex(@"[A-Z]+");
             Regex hasMiniMaxChar = new Regex(@".{6,12}");
-            Regex hasLowerChar   = new Regex(@"[a-z]+");
+            Regex hasLowerChar = new Regex(@"[a-z]+");
 
 
             if (!hasNumber.IsMatch(inputLogin))

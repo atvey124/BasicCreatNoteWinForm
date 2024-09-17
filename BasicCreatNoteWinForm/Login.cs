@@ -3,7 +3,9 @@ namespace BasicCreatNoteWinForm
 {
     public partial class login : Form
     {
-        private readonly UserManagment checkCurrentUserInfo = new UserManagment();
+        private readonly UserManagment checkCurrentUserInfo       = new UserManagment();
+        private readonly LoginValidation loginValidation          = new LoginValidation();   
+        private readonly PasswordValidation passwordValidation    = new PasswordValidation();
 
 
         public login()
@@ -16,7 +18,8 @@ namespace BasicCreatNoteWinForm
             string password = textBoxPassword.Text;
             string login    = textBoxLogin.Text;
 
-            if (PassValidation.ValidationLogin(password))
+            if (passwordValidation.Validation(password) && 
+                loginValidation.Validation(login))
             {
                 if (checkCurrentUserInfo.IsAuthorizedUser(password, login))
                 {

@@ -4,12 +4,11 @@ using System.Diagnostics;
 namespace BasicCreatNoteWinForm
 {
     class InsertManagment
-    {
-        private MySqlCommand msCommand = new MySqlCommand();    
+    {  
         private object _lockObj        = new object();
 
-        private readonly UserManagment checkInfo = new UserManagment();
-        private readonly CookieUser cookieUser   = new CookieUser();
+        private readonly UserManagment checkCurrentUserInfo = new UserManagment();
+        private readonly CookieUser cookieUser              = new CookieUser();
 
 
         [StackTraceHidden]
@@ -21,7 +20,7 @@ namespace BasicCreatNoteWinForm
             {
                 if (cookieUser != null)
                 {
-                    if (checkInfo.IsUniqueUserLogin(cookieUser.GetUserLogin()))
+                    if (checkCurrentUserInfo.IsUniqueUserLogin(cookieUser.GetUserLogin()))
                     {
                         using(MySqlCommand msCommand = new MySqlCommand("INSERT INTO users(password,login) VALUES (@uP,@uL)", DBManagment.GetConnect()))
                         {
@@ -56,8 +55,8 @@ namespace BasicCreatNoteWinForm
                     using (MySqlCommand msCommand = new MySqlCommand("INSERT INTO note(text,datetime,geoloc,login_user) VALUES (@uT,@uDT,@uG,@uL)", DBManagment.GetConnect()))
                     {
                         msCommand.Parameters.Add("@uT", MySqlDbType.VarChar).Value   = noteText;
-                        msCommand.Parameters.Add("@uDT", MySqlDbType.DateTime).Value = checkInfo.GetCurrentDateTimeUser();
-                        msCommand.Parameters.Add("@uG", MySqlDbType.VarChar).Value   = checkInfo.GetCurrentGeolocationUser();
+                        msCommand.Parameters.Add("@uDT", MySqlDbType.DateTime).Value = checkCurrentUserInfo.GetCurrentDateTimeUser();
+                        msCommand.Parameters.Add("@uG", MySqlDbType.VarChar).Value   = checkCurrentUserInfo.GetCurrentGeolocationUser();
                         msCommand.Parameters.Add("@uL", MySqlDbType.VarChar).Value   = cookieUser.GetUserLogin();
 
 

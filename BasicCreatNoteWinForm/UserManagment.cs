@@ -7,7 +7,6 @@ namespace BasicCreatNoteWinForm
 {
     class UserManagment
     {
-        private readonly CookieUser cookieUser = new CookieUser();
 
         [StackTraceHidden]
         public bool IsUniqueUserLogin(string login)
