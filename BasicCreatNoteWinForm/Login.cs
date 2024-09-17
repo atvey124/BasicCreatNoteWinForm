@@ -3,7 +3,7 @@ namespace BasicCreatNoteWinForm
 {
     public partial class login : Form
     {
-        private readonly CheckInfo checkAutorized = new CheckInfo();
+        private readonly UserManagment checkCurrentUserInfo = new UserManagment();
 
 
         public login()
@@ -18,7 +18,7 @@ namespace BasicCreatNoteWinForm
 
             if (PassValidation.ValidationLogin(password))
             {
-                if (checkAutorized.IsAuthorized(password, login))
+                if (checkCurrentUserInfo.IsAuthorizedUser(password, login))
                 {
                     CookieUser cookieUser = new CookieUser();
                     cookieUser.SetUserLogin(login);

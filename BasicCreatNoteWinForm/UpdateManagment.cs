@@ -4,24 +4,24 @@ using System.Diagnostics;
 namespace BasicCreatNoteWinForm
 {
     
-    class UpdateDB
+    class UpdateManagment
     {
         private object _lockObj = new object();
 
 
         [StackTraceHidden]
-        public void AddEnjoy(int idNote)
+        public void AddEnjoyNote(int idNote)
         {
             lock (_lockObj)
             {
-                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET enjoy = enjoy + 1 WHERE id_note = @iN", DBConnection.GetConnect()))
+                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET enjoy = enjoy + 1 WHERE id_note = @iN", DBManagment.GetConnect()))
                 {
                     msCommand.Parameters.Add("@iN", MySqlDbType.Int32).Value = idNote;
 
 
-                    DBConnection.DBConnect();
+                    DBManagment.DBConnect();
                     msCommand.ExecuteNonQuery();
-                    DBConnection.DBCloseConnect();
+                    DBManagment.DBCloseConnect();
 
 
                     EventManagment.SetMessageBox(new Action(() =>
@@ -32,18 +32,18 @@ namespace BasicCreatNoteWinForm
         }
 
         [StackTraceHidden]
-        public void AddUnenjoy(int idNote)
+        public void AddUnenjoyNote(int idNote)
         {
             lock (_lockObj)
             {
-                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET unenjoy = unenjoy + 1 WHERE id_note = @iN", DBConnection.GetConnect()))
+                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET unenjoy = unenjoy + 1 WHERE id_note = @iN", DBManagment.GetConnect()))
                 {
                     msCommand.Parameters.Add("@iN", MySqlDbType.Int32).Value = idNote;
 
 
-                    DBConnection.DBConnect();
+                    DBManagment.DBConnect();
                     msCommand.ExecuteNonQuery();
-                    DBConnection.DBCloseConnect();
+                    DBManagment.DBCloseConnect();
 
 
                     EventManagment.SetMessageBox(new Action(() =>
@@ -54,18 +54,18 @@ namespace BasicCreatNoteWinForm
         }
 
         [StackTraceHidden]
-        public void RemoveUnenjoy(int idNote)
+        public void RemoveUnenjoyNote(int idNote)
         {
             lock (_lockObj)
             {
-                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET unenjoy = unenjoy - 1 WHERE id_note = @iN", DBConnection.GetConnect()))
+                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET unenjoy = unenjoy - 1 WHERE id_note = @iN", DBManagment.GetConnect()))
                 {
                     msCommand.Parameters.Add("@iN", MySqlDbType.Int32).Value = idNote;
 
 
-                    DBConnection.DBConnect();
+                    DBManagment.DBConnect();
                     msCommand.ExecuteNonQuery();
-                    DBConnection.DBCloseConnect();
+                    DBManagment.DBCloseConnect();
 
 
                     EventManagment.SetMessageBox(new Action(() =>
@@ -76,18 +76,18 @@ namespace BasicCreatNoteWinForm
         }
 
         [StackTraceHidden]
-        public void RemoveEnjoy(int idNote)
+        public void RemoveEnjoyNote(int idNote)
         {
             lock (_lockObj)
             {
-                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET enjoy = enjoy - 1 WHERE id_note = @iN", DBConnection.GetConnect()))
+                using (MySqlCommand msCommand = new MySqlCommand("UPDATE note SET enjoy = enjoy - 1 WHERE id_note = @iN", DBManagment.GetConnect()))
                 {
                     msCommand.Parameters.Add("@iN", MySqlDbType.Int32).Value = idNote;
 
 
-                    DBConnection.DBConnect();
+                    DBManagment.DBConnect();
                     msCommand.ExecuteNonQuery();
-                    DBConnection.DBCloseConnect();
+                    DBManagment.DBCloseConnect();
 
 
                     EventManagment.SetMessageBox(new Action(() =>

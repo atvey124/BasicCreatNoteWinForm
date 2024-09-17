@@ -3,8 +3,8 @@ namespace BasicCreatNoteWinForm
 {
     public partial class FormMain : Form
     {
-        InsertInto insertUser = new InsertInto();
-        CookieUser cookieUser = new CookieUser();
+        InsertManagment insertUser = new InsertManagment();
+        CookieUser cookieUser      = new CookieUser();
 
 
         public FormMain()

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace BasicCreatNoteWinForm
 {
-    static class DBConnection
+    static class DBManagment
     {
         private static readonly MySqlConnection DBconnect = new MySqlConnection("server=localhost;port=3306;username=root;password=1234;database=main_db;Allow User Variables=True");
 

@@ -3,17 +3,17 @@ namespace BasicCreatNoteWinForm
 {
     public partial class Profile : Form
     {
-        private readonly CheckInfo checkInfo   = new CheckInfo();
-        private readonly CookieUser cookieUser = new CookieUser();
+        private readonly UserManagment checkCurrentUserInfo = new UserManagment();
+        private readonly CookieUser cookieUser              = new CookieUser();
 
 
         public Profile()
         {
             InitializeComponent();
 
-            labelCountNotePost.Text         = checkInfo.TotalCurrentUserNote(cookieUser.GetUserLogin()).ToString();
-            labelCountTotalEnjoyNote.Text   = checkInfo.TotalCurrentUserEnjoy(cookieUser.GetUserLogin()).ToString();
-            labelTotalUnenjoyCountNote.Text = checkInfo.TotalCurrentUserUnenjoy(cookieUser.GetUserLogin()).ToString();
+            labelCountNotePost.Text         = checkCurrentUserInfo.TotalCreateNoteUser(cookieUser.GetUserLogin()).ToString();
+            labelCountTotalEnjoyNote.Text   = checkCurrentUserInfo.TotalEnjoyUser(cookieUser.GetUserLogin()).ToString();
+            labelTotalUnenjoyCountNote.Text = checkCurrentUserInfo.TotalUnenjoyUser(cookieUser.GetUserLogin()).ToString();
 
         }
 

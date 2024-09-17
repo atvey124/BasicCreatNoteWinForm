@@ -10,10 +10,10 @@ namespace BasicCreatNoteWinForm
 
             if(int.TryParse(searchText,out int value))
             {
-                CheckInfo checkInfo = new CheckInfo();
+                NoteManagment noteManagment = new NoteManagment();
 
-                int MinValueNote = checkInfo.GetMinNumberNote();
-                int MaxValueNote = checkInfo.GetMaxNumberNote();
+                int MinValueNote = noteManagment.GetMinNumberNote();
+                int MaxValueNote = noteManagment.GetMaxNumberNote();
 
                 if (value >= MinValueNote && value <= MaxValueNote)
                     return true; 

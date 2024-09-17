@@ -7,43 +7,43 @@ namespace BasicCreatNoteWinForm
         private static int currentNote           = numberNoteDefaultValue;
 
 
-        private readonly CookieUser cookieUser   = new CookieUser();
-        private readonly CheckInfo checkInfo     = new CheckInfo();
-        private readonly InsertInto insertNote   = new InsertInto();
-        private readonly UpdateDB updateDataBase = new UpdateDB();
+        private readonly CookieUser cookieUser              = new CookieUser();
+        private readonly NoteManagment checkCurrentNoteInfo = new NoteManagment();
+        private readonly InsertManagment insertNote         = new InsertManagment();
+        private readonly UpdateManagment updateNote         = new UpdateManagment();
 
 
         public Main()
         {
             InitializeComponent();
 
-            if (checkInfo.IsUserNote(currentNote))
+            if (checkCurrentNoteInfo.ThisNoteBelongUser(currentNote))
                 labelIsUserNote.Text = "Is yours note";
             else
                 labelIsUserNote.Text = string.Empty;
 
-            textBoxNote.Text       = checkInfo.CurrentNoteText(currentNote);
+            textBoxNote.Text       = checkCurrentNoteInfo.CurrentNoteText(currentNote);
             labelUniqueNumber.Text = currentNote.ToString();
-            labelDateTime.Text     = checkInfo.CurrentDateTimeNote(currentNote);
-            labelGeolocation.Text  = checkInfo.CurrentGeolocationNote(currentNote);
-            labelLoginUser.Text    = checkInfo.CurrentUserNote(currentNote);
-            labelEnjoy.Text        = checkInfo.CurrentEnjoy(currentNote).ToString();
-            labelUnenjoy.Text      = checkInfo.CurrentUnenjoy(currentNote).ToString();
+            labelDateTime.Text     = checkCurrentNoteInfo.CurrentDateTimeNote(currentNote).ToString();
+            labelGeolocation.Text  = checkCurrentNoteInfo.CurrentGeolocationNote(currentNote);
+            labelLoginUser.Text    = checkCurrentNoteInfo.CurrentNoteUserLogin(currentNote);
+            labelEnjoy.Text        = checkCurrentNoteInfo.CurrentNoteEnjoy(currentNote).ToString();
+            labelUnenjoy.Text      = checkCurrentNoteInfo.CurrentNoteUnenjoy(currentNote).ToString();
         }
 
         private void textBoxNote_TextChanged(object sender, EventArgs e)
         {
-            if (checkInfo.IsUserNote(currentNote))
+            if (checkCurrentNoteInfo.ThisNoteBelongUser(currentNote))
                 labelIsUserNote.Text = "Is yours note";
             else
                 labelIsUserNote.Text = string.Empty;
 
             labelUniqueNumber.Text = currentNote.ToString();
-            labelDateTime.Text     = checkInfo.CurrentDateTimeNote(currentNote);
-            labelGeolocation.Text  = checkInfo.CurrentGeolocationNote(currentNote);
-            labelLoginUser.Text    = checkInfo.CurrentUserNote(currentNote);
-            labelEnjoy.Text        = checkInfo.CurrentEnjoy(currentNote).ToString();
-            labelUnenjoy.Text      = checkInfo.CurrentUnenjoy(currentNote).ToString();
+            labelDateTime.Text     = checkCurrentNoteInfo.CurrentDateTimeNote(currentNote).ToString();
+            labelGeolocation.Text  = checkCurrentNoteInfo.CurrentGeolocationNote(currentNote);
+            labelLoginUser.Text    = checkCurrentNoteInfo.CurrentNoteUserLogin(currentNote);
+            labelEnjoy.Text        = checkCurrentNoteInfo.CurrentNoteEnjoy(currentNote).ToString();
+            labelUnenjoy.Text      = checkCurrentNoteInfo.CurrentNoteUnenjoy(currentNote).ToString();
         }
 
         private void labelCreatNote_Click(object sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace BasicCreatNoteWinForm
 
         private void labelBackNote_Click(object sender, EventArgs e)
         {
-            string noteText = checkInfo.CurrentNoteText(--currentNote);
+            string noteText = checkCurrentNoteInfo.CurrentNoteText(--currentNote);
 
             if (noteText != string.Empty)
                 textBoxNote.Text = noteText;
@@ -80,7 +80,7 @@ namespace BasicCreatNoteWinForm
 
         private void labelNextNote_Click(object sender, EventArgs e)
         {
-            string noteText = checkInfo.CurrentNoteText(++currentNote);
+            string noteText = checkCurrentNoteInfo.CurrentNoteText(++currentNote);
 
             if (noteText != string.Empty)
                 textBoxNote.Text = noteText;
@@ -99,7 +99,7 @@ namespace BasicCreatNoteWinForm
             if (SearchValidation.SearchValidationMain(searchNote))
             {
                 currentNote = int.Parse(searchNote);
-                textBoxNote.Text = checkInfo.CurrentNoteText(currentNote);
+                textBoxNote.Text = checkCurrentNoteInfo.CurrentNoteText(currentNote);
             }
             else
                 EventManagment.InvokeMessageBox();
@@ -108,35 +108,35 @@ namespace BasicCreatNoteWinForm
 
         private void labelEnjoy_Click(object sender, EventArgs e)
         {
-            if (!checkInfo.IsEnjoy(currentNote))
+            if (!checkCurrentNoteInfo.IsEnjoyed(currentNote))
             {
-                updateDataBase.AddEnjoy(currentNote);
+                updateNote.AddEnjoyNote(currentNote);
                 cookieUser.AddUserEnjoy(currentNote);
 
             }
             else
             {
-                updateDataBase.RemoveEnjoy(currentNote);
+                updateNote.RemoveEnjoyNote(currentNote);
                 cookieUser.DeleteUserEnjoy(currentNote);
 
             }
-            labelEnjoy.Text = checkInfo.CurrentEnjoy(currentNote).ToString();
+            labelEnjoy.Text = checkCurrentNoteInfo.CurrentNoteEnjoy(currentNote).ToString();
 
         }
 
         private void labelUnenjoy_Click(object sender, EventArgs e)
         {
-            if (!checkInfo.IsUnenjoy(currentNote))
+            if (!checkCurrentNoteInfo.IsUnenjoyed(currentNote))
             {
-                updateDataBase.AddUnenjoy(currentNote);
+                updateNote.AddUnenjoyNote(currentNote);
                 cookieUser.AddUserUnenjoy(currentNote);
             }
             else
             {
-                updateDataBase.RemoveUnenjoy(currentNote);
+                updateNote.RemoveUnenjoyNote(currentNote);
                 cookieUser.DeleteUserUnenjoy(currentNote);
             }
-            labelUnenjoy.Text = checkInfo.CurrentUnenjoy(currentNote).ToString();
+            labelUnenjoy.Text = checkCurrentNoteInfo.CurrentNoteUnenjoy(currentNote).ToString();
         }
 
         private void buttonProfile_Click(object sender, EventArgs e)
